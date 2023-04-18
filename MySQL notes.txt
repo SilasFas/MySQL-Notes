@@ -1,0 +1,303 @@
+MySQL Aula 1
+User: root
+MySQL Root Password: 
+wamp:
+===================================================
+Assitir aula 8 - My SQL do Curso em Videos para revisar Backup (inportar/exportar): https://www.youtube.com/watch?v=w6OYS_M7hTM
+===================================================
+1 - Uma lista com o nome de todas as gafanhotas. 
+(22 mulheres) 
+select nome, sexo from gafanhotos where sexo = 'F';
+select count(*) from gafanhotos where sexo = 'F';
+
+2 - Uma lista com nome de todos aqueles que nasceram entre 1/jan/2000 e 31/dez/2015 
+(19 pessoas)
+select nome, nascimento from gafanhotos where nascimento between '2000-01-01' and '2015-12-31';
+select count(*) from gafanhotos where nascimento between '2000-01-01' and '2015-12-31';
+
+
+3 - Uma lista com o nome de todos os homens que trabalham como programadores
+(11 homens programadores)
+select nome, profissao, sexo from gafanhotos where profissao = 'Programador' and sexo = 'M';
+select count(*) from gafanhotos where profissao = 'Programador' and sexo = 'M';
+
+4 - Uma lista com nome de todas as mulheres que nasceram no Brasil e que têm seu nome iniciando com a letra J.
+(5 Mulheres)
+select nome, sexo from gafanhotos where sexo = 'F' and nome like 'J%';
+select count(*) from gafanhotos where sexo = 'F' and nome like 'J%';
+
+5 - Uma lista com o nome e nacionalidade de todos os homens que têm silva no nome, não nasceram no Brasil e pesam menos de 100kg.
+(1 homem)
+select nome, nacionalidade, sexo, peso from gafanhotos where nome like '%silva%' and sexo = 'M' and nacionalidade != 'Brasil'; 
+
+6 - Qual é a maior altura entre os gafanhotos homens que moram no Brasil?
+(2.35)
+select nome, sexo, altura from gafanhotos where sexo = 'M';
+select max(altura) from gafanhotos where sexo = 'M';
+
+7 - Qual é a média de peso dos gafanhotos cadastrados?
+(73.96)
+select avg(peso) from gafanhotos; 
+
+8 - Qual é o menor peso entre as mulheres que nasceram fora do Brasil e entre 01/jan/1990 e 31/dez/2000?
+(35.90)
+select min(peso) from gafanhotos where sexo = 'F' and nascimento between '1990-01-01' and '2000-12-31' and nacionalidade != 'Brasil';
+
+9 - Quantos gafanhotos mulheres tem mais de 1.90m  de altura?
+(5 Mulheres)
+select nome, altura, sexo from gafanhotos where sexo = 'F' and altura > '1.90'; 
+select count(*) from gafanhotos where sexo = 'F' and altura > '1.90'; 
+
+===================================================
+My Structure Query Language
+
+> Banco relacional
+
+Registros
+Tabelas
+Arquivos
+
+arquivos => pastas => registros
+bancos de dados  => tabelas => registros
+
+cadastro => pessoas => registros
+
+bancos de dados => tabelas => registros (compostos por campos: nome idade sexo nacionalidade cor etc)
+ 
+Arquivos sequencias
+Arquivos de acesso direto
+
+Banco de dados
+1 - base de daos
+2 - sistemas gerenciador (DNS)
+3 - linguagem de exploração
+4 - programas adicionais
+
+Banco de dados (tipos de comandos)
+1 DDL - Definição (criar e alterar - define estrutura/ manioula tabela)
+> CREATE DATABASE 
+> CREATE TABLE 
+> ALTER TABLE 
+> DROP TABLE
+
+2 DML - Manipulação (incluir / excluir - manipula dados )
+> INSERT INTO
+> UPDATE
+> DELETE
+> TRUNCATE
+
+3 DQL - Solicitação 
+> SELECT
+
+4 DCL - Controle (quem usar quais comando)
+5 DTL - Transação 
+
+DICA (Durabilidade Isolamento Consistencia Atomicidade)
+
+TIPOS PRIMITIVOS (VER EM FOTOS) (ESTUDAR)
+CONSTRAINT = parametro (ESTUDAR)
+COLLATION (ESTUDAR)
+
+default character set utf8
+default collate utf8_gereral_ci;
+
+
+Campo de chave primária = um campo de chave primária não se repéte. (CPF ou matrculas são chaves primários pois só há um)
+(veja foto)
+===================================================
+utf8_swedish_ci
+===================================================
+*********DATABASES - COMANDOS********
+
+CREATE DATABASE myDB; (CRIAR)
+
+USE myDB; (usar)
+
+DROP DATABASE myDB; (deletar banco de dados)
+DROP TABLE workers; (deletar tabela)
+DROP TABLE IF EXISTS teste; (deletar tabela)
+
+ALTER TABLE employees DROP COLUMN email; (deletar uma coluna da tabela) 
+
+ALTER DATABASE myDB READ ONLY = 1; (ativa read only mode)
+
+ALTER DATABASE myDB READ ONLY = 0; (desativa read only mode)
+
+CREATE TABLE pessoas (  );
+
+DESCRIBE pessoas; (descreve a tabela feita)
+
+SHOW DATABASES; (monstra quais são os banco de dados)
+
+STATUS;
+
+
+SHOW TABLES;
+SHOW CREATE TABLE amigos; (mostra quais comando foram usados para criar tabela)
+
+RENAME TABLE employees TO  workers; (renomeia a tabela)
+===================================================
+Manipulando Colunas (Campos/Fields)
+
+ALTER TABLE employees ADD phone_number VARCHAR(20);
+(adiciona uma nava coluna na tabela)
+
+ALTER TABLE pessoas ADD COLUMN profissao varchar(10);
+
+ALTER TABLE pessoas DROP COLUMN profissao;
+
+ALTER TABLE employees RENAME column phone_number to email; (renomear coluna)
+
+ALTER TABLE employees MODIFY email VARCHAR(100); (mudar tipo de dado)
+
+ALTER TABLE employees MODIFY email VARCHAR(100) AFTER last_name; (altera a posição do dado na coluna)
+
+ALTER TABLE pessoas ADD COLUMN profissao VARCHAR(10) AFTER nome;
+
+ALTER TABLE pessoas modify profissao varchar(20) not null default '';
+
+ALTER TABLE pessoas CHANGE COLUMN profissao prof VARCHAR(20);
+(renomear a coluna)
+
+ALTER TABLE pessoas RENAME TO  gafanhotos;
+(renomear a tabela)
+
+ALTER TABLE cursos ADD idcurso INT FIRST;
+
+ALTER TABLE cursos ADD PRIMARY KEY(idcurso);
+===================================================
+INSERT INTO employees VALUES (1, 'Silas', 'Santos', 50.75, '2023-01-02'); (inserindo linhas na tabela)
+
+INSERT INTO employees 
+VALUES  (2, 'Saulo', 'Santos', 33.46, '2022-04-06'),
+		(3, 'Diones', 'Soares', 89.25, '2015-01-12'),
+		(4, 'Sara', 'Arlindo', 74.25, '2017-05-15'),
+        	(5, 'Ana', 'Beatriz', 30.25, '2022-01-01');
+(inserindo varias linhas na tabela)
+
+INSERT INTO employees (employee_id, first_name, last_name)
+VALUES  (5, 'Pedro', 'Machado'); 
+(inserindo linhas na tabela, porém emitindo dados)
+===================================================
+<><>Selecionar<><>
+
+SELECT * FROM employees; (seleciona a tabela desejada, trazendo os dados da tabela)
+
+SELECT * FROM cursos ORDER BY nome;
+select * from cursos order by nome DESC; (ordenar descrecente)
+
+SELECT nome, carga, ano FROM cursos  ORDER BY nome;
+
+SELECT nome, carga, ano FROM cursos  ORDER BY ano, nome;
+
+SELECT * FROM cursos WHERE ano = '2016' ORDER BY nome;
+
+SELECT nome, carga FROM cursos WHERE ano = '2016' ORDER BY nome;
+
+SELECT nome, descricao, carga FROM cursos WHERE ano = '2016'  ORDER BY nome;
+
+SELECT * FROM cursos WHERE totaulas BETWEEN 20 AND 30 ORDER BY nome;
+
+SELECT nome, ano FROM cursos WHERE ano BETWEEN 2014 AND 2016 ORDER BY nome;
+
+SELECT nome, ano FROM cursos WHERE ano BETWEEN 2014 AND 2016 ORDER BY ano desc, nome asc;
+
+SELECT idcurso, nome, FROM cursos WHERE ano IN (2014, 2016, 2018) ORDER BY nome;
+
+SELECT nome, carga, totaulas FROM cursos WHERE carga > 35 AND totaulas < 30;
+
+
+SELECT * FROM cursos WHERE nome LIKE 'P%'; (mostra todos os cursos que começam com a letra P)
+
+SELECT * FROM cursos WHERE nome LIKE '%a'; (mostra todos os cursos que terminam com a letra a)
+
+SELECT * FROM cursos WHERE nome LIKE '%a%'; (mostra todos os cursos que tenham a letra a)
+
+SELECT * FROM cursos WHERE nome NOT LIKE '%a%'; (mostra todos os cursos que não tenham a letra a)
+
+SELECT * FROM cursos WHERE nome like 'ph%p%'; 
+
+SELECT DISTINCT nacionalidade FROM gafanhotos;
+
+>>>>Função de agregação<<<<
+SELECT COUNT(nome) FROM cursos;
+SELECT COUNT(*) FROM cursos WHERE carga > 40;
+SELECT MAX(carga) FROM cursos;
+SELECT MAX(totaulas) FROM cursos WHERE ano = '2016';
+SELECT nome, MIN(totaulas) FROM cursos WHERE ano = '2016';
+select SUM(totaulas) from cursos where ano = '2016';
+
+SELECT first_name, last_name FROM employees; (seleciona a tabela desejada, dados do registro selecionado (neste caso: primeiro nome e ultimo nome))
+
+SELECT * FROM employees WHERE employee_id = 2;
+SELECT * FROM employees WHERE hourly_pay >= 40;
+SELECT * FROM employees WHERE hire_date >= '2020-12-31';
+SELECT * FROM employees WHERE employee_id != 1;
+SELECT * FROM employees WHERE hire_date IS NULL;
+SELECT * FROM employees WHERE hire_date IS NOT NULL;
+((select data from the table))
+
+create database cadastro 
+default character set utf8
+default collate utf8_gereral_ci;
+<cria o banco de dados e define a ascentuação em português>
+
+===================================================
+Manipulando registros/linhas/tuplas (row)
+
+
+<><><>Mudar linhas incorretas<><><>
+UPDATE cursos SET nome = 'HTML5' WHERE idcurso = '1';
+
+UPDATE cursos SET nome =  'PHP' , ano = '2015'  WHERE idcurso = '4';
+
+UPDATE cursos SET nome =  'Java' , carga = '40', ano = '2015'  WHERE idcurso = '5' LIMIT 1;
+
+UPDATE employees SET hourly_pay = null WHERE  first_name = 'Pedro'; 
+
+<><><>Remonvendo uma linha<><><>
+DELETE FROM cursos WHERE ano = '8';
+DELETE FROM cursos WHERE ano = '2050' LIMIT 3; 
+
+<><><>Remonvendo todas as linhas da tabela<><><>
+TRUNCATE TABLE cursos;
+===================================================
+AUTOCOMMIT, COMMIT, ROLLBACK
+COMMIT = salvar
+AUTOCOMMIT = salvar automaticamente
+ROLLBACK = voltar
+SET AUTOCOMMIT = OFF;
+COMMIT;
+ROLLBACK;
+
+
+
+
+
+
+
+
+
+
+===================================================
+Exemplos:
+
+create table pessoas (
+id int not null auto_increment,
+nome varchar (30) not null,
+nascimento date, 
+sexo enum ('M', 'F'),
+peso decimal (5,2),
+altura decimal (3,2),
+nacionalidade varchar (20) default 'Brasil',
+primary key (id)
+) default character set utf8;
+
+
+CREATE TABLE IF NOT EXISTS cursos (
+nome varchar(30) not null unique,
+descricao text, 
+carga int,
+total_aulas int unsigned,
+ano year default '2020'
+); default character set utf8; 
