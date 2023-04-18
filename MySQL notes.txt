@@ -48,6 +48,13 @@ select min(peso) from gafanhotos where sexo = 'F' and nascimento between '1990-0
 select nome, altura, sexo from gafanhotos where sexo = 'F' and altura > '1.90'; 
 select count(*) from gafanhotos where sexo = 'F' and altura > '1.90'; 
 
+10 - Uma lista com as profissões dos gafanhotos e seus respectivos quantitativos.
+
+11 - Quantos gafanhotos homens e quantos gafanhotos mulheres nasceram após 01/han/2005?
+
+12 - Uma lista com os gafanhotos que nasceram fora do Brasil, mostrabdo o país de origem e o total de pessoas nascidas lá. Só nos interessam os países que tiverem mais de 3 gafanhotos com essa nacionalidade.
+
+4 - Uma lista agrupada pela altura dos gafanhotos, mostrando quantas pessoaspesam mais de 100kg e que estão acima da média de altura de todos os cadastrados.
 ===================================================
 My Structure Query Language
 
@@ -218,6 +225,7 @@ SELECT * FROM cursos WHERE nome NOT LIKE '%a%'; (mostra todos os cursos que não
 SELECT * FROM cursos WHERE nome like 'ph%p%'; 
 
 SELECT DISTINCT nacionalidade FROM gafanhotos;
+(Considera uma ocorrência de cada valor dentro do registro.)
 
 >>>>Função de agregação<<<<
 SELECT COUNT(nome) FROM cursos;
@@ -226,6 +234,35 @@ SELECT MAX(carga) FROM cursos;
 SELECT MAX(totaulas) FROM cursos WHERE ano = '2016';
 SELECT nome, MIN(totaulas) FROM cursos WHERE ano = '2016';
 select SUM(totaulas) from cursos where ano = '2016';
+
+
+<><><><>GROUP BY<><><><>
+
+SELECT totaulas, COUNT(*) FROM cursos GROUP BY totaulas ORDER BY totaulas;
+
+SELECT carga, COUNT(nome) FROM cursos WHERE totaulas = 30 group by carga;
+
+SELECT carga, COUNT(nome) FROM cursos WHERE totaulas = 30 GROUP BY carga;
+
+SELECT ano, COUNT(*) FROM cursos GROUP BY ano ORDER BY COUNT(*);
+
+SELECT ano, COUNT(*) FROM cursos GROUP BY ano HAVING COUNT(ano) >= 5 ORDER BY COUNT(*);
+
+SELECT ano, COUNT(*) FROM cursos WHERE totaulas > 30 GROUP BY ano HAVING ano > 2013 ORDER BY count(*) desc; 
+
+SELECT carga, COUNT(*) FROM cursos WHERE ano > 2015 GROUP BY carga;
+
+NOTA: HAVING precisa ter o mesmo campo do GROUP BY.
+
+SELECT carga, COUNT(*) FROM cursos WHERE ano > 2015 GROUP BY carga HAVING carga > (SELECT AVG(carga) FROM cursos);
+
+
+
+
+
+
+
+
 
 SELECT first_name, last_name FROM employees; (seleciona a tabela desejada, dados do registro selecionado (neste caso: primeiro nome e ultimo nome))
 
