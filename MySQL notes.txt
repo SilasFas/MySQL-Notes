@@ -305,6 +305,8 @@ DELETE FROM cursos WHERE ano = '2050' LIMIT 3;
 
 <><><>Remonvendo todas as linhas da tabela<><><>
 TRUNCATE TABLE cursos;
+
+
 ==================================================
 Modelo relacional
 Relacionamentos:
@@ -329,6 +331,39 @@ Relacionamento: muitos-para-muitos
 2 - essa nova entidade recebe novos atributos 
 3 - criar 2 relacionamentos
 4 - Pega a chave primária do lado um e joga no lado muitos como estrangeira. Essa entidade terá 2 chaves estrangeiras
+==================================================
+Engine: maquina que cria registros. Suporta chaves estrangeiras
+
+1 - MyIsam (mais antiga)
+2 - InnoDB (recomendado) 
+3 - XtraDB (recomendado) 
+
+Transação: toda ação que um banco de dados pode executar
+
+DICA (Durabilidade Isolamento Consistencia Atomicidade)
+ACID (Durabilidade Isolamento Consistencia Atomicidade)
+
+CRIANDO FOREIGN KEY
+1 - ALTER TABLE gafanhotos ADD COLUMN cursopreferido INT;
+2 - ALTER TABLE gafanhotos ADD FOREIGN KEY (cursopreferido) REFERENCES cursos(idcurso); 
+
+USANDO TABELAS JUNTAS
+
+SELECT gafanhotos.id, gafanhotos.nome, gafanhotos.cursopreferido, cursos.nome, cursos.ano FROM gafanhotos INNER JOIN cursos ON cursos.idcurso = gafanhotos.cursopreferido ORDER BY id;
+
+SELECT gafanhotos.id, gafanhotos.nome, gafanhotos.cursopreferido, cursos.nome, cursos.ano 
+FROM gafanhotos INNER JOIN cursos 
+ON cursos.idcurso = gafanhotos.cursopreferido ORDER BY id;
+
+Sempre quando for usar o JOIN precisa usar também o ON (ele faz a ligação entre PRIMARY KEY e  FOREIGN KEY)
+
+SELECT gafanhotos.id, gafanhotos.nome, cursos.nome, cursos.ano 
+FROM gafanhotos LEFT OUTER JOIN cursos 
+ON cursos.idcurso = gafanhotos.cursopreferido;
+
+SELECT gafanhotos.id, gafanhotos.nome, cursos.nome, cursos.ano 
+FROM gafanhotos RIGHT OUTER JOIN cursos 
+ON cursos.idcurso = gafanhotos.cursopreferido;
 ===================================================
 AUTOCOMMIT, COMMIT, ROLLBACK
 COMMIT = salvar
@@ -337,16 +372,6 @@ ROLLBACK = voltar
 SET AUTOCOMMIT = OFF;
 COMMIT;
 ROLLBACK;
-
-
-Modelo relacional - chave estrangeira muitos-para-muitos 1.png
-
-
-
-
-
-
-
 ===================================================
 Exemplos:
 
