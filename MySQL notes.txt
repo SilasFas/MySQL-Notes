@@ -88,7 +88,7 @@ Banco de dados
 4 - programas adicionais
 
 Banco de dados (tipos de comandos)
-1 DDL - Definição (criar e alterar - define estrutura/ manioula tabela)
+1 DDL - Definição (criar e alterar - define estrutura/ manipula tabela)
 > CREATE DATABASE 
 > CREATE TABLE 
 > ALTER TABLE 
@@ -114,7 +114,6 @@ COLLATION (ESTUDAR)
 
 default character set utf8
 default collate utf8_gereral_ci;
-
 
 Campo de chave primária = um campo de chave primária não se repéte. (CPF ou matrculas são chaves primários pois só há um)
 (veja foto)
@@ -263,14 +262,6 @@ NOTA: HAVING precisa ter o mesmo campo do GROUP BY.
 
 SELECT carga, COUNT(*) FROM cursos WHERE ano > 2015 GROUP BY carga HAVING carga > (SELECT AVG(carga) FROM cursos);
 
-
-
-
-
-
-
-
-
 SELECT first_name, last_name FROM employees; (seleciona a tabela desejada, dados do registro selecionado (neste caso: primeiro nome e ultimo nome))
 
 SELECT * FROM employees WHERE employee_id = 2;
@@ -289,7 +280,6 @@ default collate utf8_gereral_ci;
 ===================================================
 Manipulando registros/linhas/tuplas (row)
 
-
 <><><>Mudar linhas incorretas<><><>
 UPDATE cursos SET nome = 'HTML5' WHERE idcurso = '1';
 
@@ -305,7 +295,6 @@ DELETE FROM cursos WHERE ano = '2050' LIMIT 3;
 
 <><><>Remonvendo todas as linhas da tabela<><><>
 TRUNCATE TABLE cursos;
-
 
 ==================================================
 Modelo relacional
@@ -364,6 +353,36 @@ ON cursos.idcurso = gafanhotos.cursopreferido;
 SELECT gafanhotos.id, gafanhotos.nome, cursos.nome, cursos.ano 
 FROM gafanhotos RIGHT OUTER JOIN cursos 
 ON cursos.idcurso = gafanhotos.cursopreferido;
+
+CREATE TABLE gafanhoto_assiste_curso (
+id int not null auto_increment,
+data date,
+idgafanhoto int,
+idcurso int,
+PRIMARY KEY (id),
+FOREIGN KEY (idgafanhoto) REFERENCES gafanhotos (id),
+FOREIGN KEY (idcurso) REFERENCES cursos (idcurso)
+) default character set utf8;
+
+
+select * from gafanhotos g
+join gafanhoto_assiste_curso a
+on g.id = a.idgafanhoto;
+
+select g.id, g.nome, a.idgafanhoto, idcurso from gafanhotos g
+join gafanhoto_assiste_curso a
+on g.id = a.idgafanhoto;
+
+select g.nome, idcurso from gafanhotos g
+join gafanhoto_assiste_curso a
+on g.id = a.idgafanhoto order by g.nome;
+
+select g.nome, c.nome from gafanhotos g
+join gafanhoto_assiste_curso a 
+on g.id = a.idgafanhoto
+join cursos c
+on c.idcurso = a.idcurso
+order by g.nome;
 ===================================================
 AUTOCOMMIT, COMMIT, ROLLBACK
 COMMIT = salvar
@@ -393,4 +412,4 @@ descricao text,
 carga int,
 total_aulas int unsigned,
 ano year default '2020'
-); default character set utf8; 
+) default character set utf8;
